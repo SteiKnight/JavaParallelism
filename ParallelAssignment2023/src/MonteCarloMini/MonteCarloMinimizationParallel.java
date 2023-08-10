@@ -51,5 +51,6 @@ public class MonteCarloMinimizationParallel implements Runnable {
     searches = new Search[num_searches];
   }
 
-  public void run() {}
+  public void run() {
+  }
 }
