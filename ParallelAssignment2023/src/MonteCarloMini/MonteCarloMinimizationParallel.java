@@ -11,7 +11,7 @@ import java.util.concurrent.RecursiveAction;
 
 public class MonteCarloMinimizationParallel extends RecursiveAction {
 
-  static final int SEQUENTIAL_CUTOFF = 1000;
+  static int SEQUENTIAL_CUTOFF = 1000;
   static int min = Integer.MAX_VALUE; //Shared variable amongst all devices
   static int mainFinder = -1;
   int local_min = Integer.MAX_VALUE;
@@ -62,18 +62,35 @@ public class MonteCarloMinimizationParallel extends RecursiveAction {
     Search[] searches; // Array of searches
     Random rand = new Random(); //the random number generator
 
-    System.out.println("Enter the test values:");
-    Scanner sc = new Scanner(System.in);
-    String data = sc.nextLine();
-    String[] values_data = data.split(" ");
+    //This code is used to test the different sequential cutoffs while keeping everything equal
+    // System.out.println("Enter the test values:");
+    // Scanner sc = new Scanner(System.in);
+    // String data = sc.nextLine();
+    // String[] values_data = data.split(" ");
 
-    rows = Integer.parseInt(values_data[0]);
-    columns = Integer.parseInt(values_data[1]);
-    xmin = Double.parseDouble(values_data[2]);
-    xmax = Double.parseDouble(values_data[3]);
-    ymin = Double.parseDouble(values_data[4]);
-    ymax = Double.parseDouble(values_data[5]);
-    searches_density = Double.parseDouble(values_data[6]);
+    // rows = Integer.parseInt(values_data[0]);
+    // columns = Integer.parseInt(values_data[1]);
+    // xmin = Double.parseDouble(values_data[2]);
+    // xmax = Double.parseDouble(values_data[3]);
+    // ymin = Double.parseDouble(values_data[4]);
+    // ymax = Double.parseDouble(values_data[5]);
+    // searches_density = Double.parseDouble(values_data[6]);
+    // SEQUENTIAL_CUTOFF = Integer.parseInt(values_data[7]);
+    
+    if (args.length != 7) {
+      System.out.println(
+        "Incorrect number of command line arguments provided."
+      );
+      System.exit(0);
+    }
+
+    rows = Integer.parseInt(args[0]);
+    columns = Integer.parseInt(args[1]);
+    xmin = Double.parseDouble(args[2]);
+    xmax = Double.parseDouble(args[3]);
+    ymin = Double.parseDouble(args[4]);
+    ymax = Double.parseDouble(args[5]);
+    searches_density = Double.parseDouble(args[6]);
 
     terrain = new TerrainArea(rows, columns, xmin, xmax, ymin, ymax);
     num_searches = (int) (rows * columns * searches_density);
@@ -88,10 +105,11 @@ public class MonteCarloMinimizationParallel extends RecursiveAction {
     int startTime = (int) System.currentTimeMillis();
 
     //all searches
-      final ForkJoinPool fjPool = new ForkJoinPool();
-      fjPool.invoke(
-        new MonteCarloMinimizationParallel(searches, 0, num_searches)
-      );
+    System.out.println(Runtime.getRuntime().availableProcessors());
+    final ForkJoinPool fjPool = new ForkJoinPool();
+    fjPool.invoke(
+      new MonteCarloMinimizationParallel(searches, 0, num_searches)
+    );
     //end timer
     int endTime = (int) System.currentTimeMillis();
 
@@ -130,17 +148,3 @@ public class MonteCarloMinimizationParallel extends RecursiveAction {
     );
   }
 }
-    // if (args.length != 7) {
-    //   System.out.println(
-    //     "Incorrect number of command line arguments provided."
-    //   );
-    //   System.exit(0);
-    // }
-
-    // rows = Integer.parseInt(args[0]);
-    // columns = Integer.parseInt(args[1]);
-    // xmin = Double.parseDouble(args[2]);
-    // xmax = Double.parseDouble(args[3]);
-    // ymin = Double.parseDouble(args[4]);
-    // ymax = Double.parseDouble(args[5]);
-    // searches_density = Double.parseDouble(args[6]);
