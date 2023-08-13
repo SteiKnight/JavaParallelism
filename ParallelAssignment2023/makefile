@@ -1,36 +1,23 @@
-# Makefile for MonteCarloMini Java project
+# Makefile
 
-# Compiler and compiler flags
-JAVAC = javac
-JFLAGS = -g
+# Directory structure
+SRC_DIR = src
+BIN_DIR = bin
 
-# List of Java source files
-SOURCES = \
-	MonteCarloMini/MonteCarloMinimization.java \
-	MonteCarloMini/MonteCarloMinimizationParallel.java \
-	MonteCarloMini/Search.java \
-	MonteCarloMini/TerrainArea.java
+# Compilation flags
+JFLAGS = -d $(BIN_DIR) -sourcepath $(SRC_DIR) -cp $(BIN_DIR)
 
-# List of class files (automatically derived from source files)
-CLASSES = $(SOURCES:.java=.class)
+# Source files
+SOURCES = $(wildcard $(SRC_DIR)/*.java)
+CLASSES = $(patsubst $(SRC_DIR)/%.java,$(BIN_DIR)/%.class,$(SOURCES))
 
-# Rule to build all classes
+# Default target
 all: $(CLASSES)
 
-# Rule to compile .java files to .class files
-%.class: %.java
-	$(JAVAC) $(JFLAGS) $<
+# Rule to compile .java files
+$(BIN_DIR)/%.class: $(SRC_DIR)/%.java
+	javac $(JFLAGS) $<
 
-# Clean up generated files
+# Clean the generated .class files
 clean:
-	rm -f $(CLASSES)
-
-# Run the MonteCarloMinimization program
-run:
-	java MonteCarloMini.MonteCarloMinimization
-
-# Run the MonteCarloMinimizationParallel program
-run-parallel:
-	java MonteCarloMini.MonteCarloMinimizationParallel
-
-.PHONY: all clean run run-parallel
+	rm -f $(BIN_DIR)/*.class

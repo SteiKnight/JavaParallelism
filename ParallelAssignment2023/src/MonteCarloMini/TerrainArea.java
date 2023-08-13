@@ -1,7 +1,5 @@
 package MonteCarloMini;
 
-import java.lang.Math.*;
-
 import MonteCarloMini.Search.Direction;
 
 public class TerrainArea {
@@ -24,6 +22,7 @@ public class TerrainArea {
 		this.xmax = xmax;
 		this.ymin = ymin;
 		this.ymax = ymax;
+		
 		heights = new int[rows][columns];
 		visit = new int[rows][columns];
 		grid_points_visited=0;
