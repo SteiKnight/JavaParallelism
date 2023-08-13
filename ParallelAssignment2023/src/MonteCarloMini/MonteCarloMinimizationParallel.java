@@ -11,7 +11,7 @@ import java.util.concurrent.RecursiveAction;
 
 public class MonteCarloMinimizationParallel extends RecursiveAction {
 
-  static final int SEQUENTIAL_CUTOFF = 300;
+  static final int SEQUENTIAL_CUTOFF = 1000;
   static int min = Integer.MAX_VALUE; //Shared variable amongst all devices
   static int mainFinder = -1;
   int local_min = Integer.MAX_VALUE;
